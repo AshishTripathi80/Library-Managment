@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    
+    tools{
+        maven "MAVEN"
+    }
+
+    stages {
+	
+		stage("Checkout code"){
+			steps
+			{
+				checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '85d4ef74-7df2-4caf-849e-a0a1d6550fed', url: 'https://git.nagarro.com/GITG00641/Java/subhranil-midya.git']]])
+				echo 'Check Out'
+			}
+        }
+        stage('Clean') {
+            steps {
+                bat 'mvn -f Assignment9/LibraryManagementMVC/pom.xml clean'
+                echo 'Cleaning..'
+            }
+        }
+        stage('Compile') {
+            steps {
+                bat 'mvn -f Assignment9/LibraryManagementMVC/pom.xml compile'
+                echo 'Compiling..'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'mvn -f Assignment9/LibraryManagementMVC/pom.xml test'
+                echo 'Testing..'
+            }
+        }
+        stage('Packaging') {
+            steps {
+                bat 'mvn -f Assignment9/LibraryManagementMVC/pom.xml package'
+                echo 'Packageing..'
+            }
+        }
+        stage('Install') {
+            steps {
+                bat 'mvn -f Assignment9/LibraryManagementMVC/pom.xml install'
+                echo 'Installing..'
+            }
+        }
+        
+      
+    }
+}
